@@ -34,17 +34,7 @@ This app can persist results to PostgreSQL using SQLAlchemy.
 
 1) Install dependencies (already in requirements.txt): SQLAlchemy, psycopg[binary], python-dotenv
 
-2) Provide a `DATABASE_URL` in one of these ways:
-	- In the UI sidebar expander, paste your URL into the `DATABASE_URL` field.
-	- Or export it in your shell before launching the app.
-
-Example URL format:
-
-```
-postgresql+psycopg://user:password@localhost:5432/mydb
-```
-
-3) First run will auto-create the `articles` table. Then enable "Save results to PostgreSQL" in the UI and run a search. You'll see a success message with the number of saved records.
+2) First run will auto-create the `articles` table. Then enable "Save results to PostgreSQL" in the UI and run a search. You'll see a success message with the number of saved records.
 
 Schema (simplified):
 - articles(id PK, pmid UNIQUE, title, authors(TEXT[]), journal, pubdate, doi, abstract, created_at, updated_at)
@@ -81,8 +71,3 @@ uvicorn src.api:app --reload --port 8000
 ```
 
 In Streamlit, open the Q&A tab, provide your `DATABASE_URL`, type a question (e.g., "How many 2024 articles in Nature?"), and click Ask. The UI shows the generated SQL and the result rows.
-
-
-Discover available models:
-- GET http://127.0.0.1:8000/models → returns a JSON list of model IDs that support `generateContent` for your API key. Use one of these (e.g., `gemini-2.5-flash`) in the Q&A tab or set `GEMINI_MODEL`.
-- Safety: The backend validates generated SQL to allow only `SELECT` queries against the `articles` table and enforces a `LIMIT`.
